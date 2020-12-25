@@ -5,7 +5,9 @@ from datetime import datetime
 import logging
 from commands.defcmd import *
 from flask_babel import *
-
+import sys
+sys.path.append('config')
+from config import *
 
 app = Flask(__name__)
 app.config.from_pyfile('settings.cfg')
@@ -22,6 +24,12 @@ def command1(str):
 def command2(str):
     str += "%s%s" % (str , 'in command2')
     print(str)
+
+def command3(str):
+
+    str += "%s%s" % (str , DEFAULT_TIMEZONE)
+    print(str)
+
 def other(str):
     str += "%s%s" % (str , 'in other')
     print(str)
@@ -30,7 +38,8 @@ def other(str):
 def switch_cmd(num,str):
     numbers = {
         CMD1: command1,
-        CMD2: command2
+        CMD2: command2,
+        CMD3: command3
     }
     method = numbers.get(num,other)
     if method:
