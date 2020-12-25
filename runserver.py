@@ -1,22 +1,48 @@
 #coding=utf-8
+
 from flask import Flask,request
 from datetime import datetime
 import logging
+from commands.defcmd import *
 from flask_babel import *
 
 
 app = Flask(__name__)
 app.config.from_pyfile('settings.cfg')
 babel = Babel(app)
+status_str = ""
 
 def error_log(app,logstr):
     currtimestring = datetime.now().strftime('%Y%m%d %H:%M:%S')
     app.logger.info(currtimestring+' %s'%logstr)
 
-@app.route('/test')
+def command1(str):
+    str = "%s%s" % (str , 'in command1')
+    print(str)
+def command2(str):
+    str += "%s%s" % (str , 'in command2')
+    print(str)
+def other(str):
+    str += "%s%s" % (str , 'in other')
+    print(str)
+
+
+def switch_cmd(num,str):
+    numbers = {
+        CMD1: command1,
+        CMD2: command2
+    }
+    method = numbers.get(num,other)
+    if method:
+        method(str)
+
+@app.route('/test', methods=['GET'])
 def get_test():
-    error_log(app,'call test')
-    return 'OK'
+    cmdid = request.values.get('id')
+    logstr = 'call test get id=> %s'% cmdid
+    error_log(app, logstr)
+    switch_cmd(int(cmdid), logstr)
+    return logstr
 
 if __name__ == '__main__':
     app.debug = True
