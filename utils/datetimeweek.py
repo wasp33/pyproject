@@ -40,7 +40,10 @@ def withinstrend(strtime,endtime,lang):
         res2 = True
     return [res1,res2]
 if __name__ == '__main__':
-    print(getdatestrbytz('US/Eastern'))
-    print(getdatestrbytz('Asia/Taipei'))
+    #print(getdatestrbytz('US/Eastern'))
+    #print(getdatestrbytz('Asia/Taipei'))
+    mtime = int(time.time())
+    print('mtime',mtime)
+
 #     withinstrend(0,0)
 #    print(getweekdaybytz('Asia/Taipei'))
